@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Customer{% endblock %}
+
+{% block body %}
+    <section aria-labelledby="customer_form_heading">
+        <div class="sm:overflow-hidden">
+            <div class="py-6 px-4 sm:p-6">
+                <div>
+                    <h2 id="payment_details_heading" class="text-lg leading-6 font-medium text-gray-900">Client</h2>
+                    <p class="mt-1 text-sm text-gray-500">Modification des données client</p>
+                </div>
+                {{ include('customer/_form.html.twig', {'button_label': 'Update'}) }}
+            </div>
+        </div>
+    </section>
+{% endblock %}
