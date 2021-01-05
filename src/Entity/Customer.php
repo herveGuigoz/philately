@@ -25,11 +25,6 @@ class Customer
     private $firstname;
 
     /**
-     * @ORM\OneToMany(targetEntity=Transaction::class, mappedBy="customer")
-     */
-    private $transactions;
-
-    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $pseudo;
@@ -53,6 +48,11 @@ class Customer
      * @ORM\Column(type="string", length=255)
      */
     private $lastname;
+
+     /**
+     * @ORM\OneToMany(targetEntity=Transaction::class, mappedBy="customer")
+     */
+    private $transactions;
 
     public function __construct()
     {

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Customer;
 use App\Form\CustomerType;
 use App\Repository\CustomerRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,11 +14,28 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/customer')]
 class CustomerController extends AbstractController
 {
-    #[Route('/', name: 'customer_index', methods: ['GET'])]
-    public function index(CustomerRepository $customerRepository): Response
+    #[Route('/{page<\d+>?1}', name: 'customer_index', methods: ['GET'])]
+    public function index(
+        Request $request,
+        CustomerRepository $customerRepository,
+        PaginatorInterface $paginator,
+        int $page,
+    ): Response
     {
+        dump($request->get('order'));
+        $pagination = $paginator->paginate(
+            $customerRepository->findAll(),
+            $page,
+            10
+        );
+
+        $currentPageNumber = $pagination->getCurrentPageNumber();
+        $numberOfPages = ceil($pagination->getTotalItemCount() / $pagination->getItemNumberPerPage());
+
         return $this->render('customer/index.html.twig', [
-            'customers' => $customerRepository->findAll(),
+            'customers' => $pagination,
+            'currentPageNumber' => $currentPageNumber,
+            'numberOfPages' => $numberOfPages,
         ]);
     }
 
@@ -42,7 +60,7 @@ class CustomerController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'customer_show', methods: ['GET'])]
+    #[Route('/history/{id}', name: 'customer_show', methods: ['GET'])]
     public function show(Customer $customer): Response
     {
         return $this->render('customer/show.html.twig', [

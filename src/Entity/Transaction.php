@@ -35,12 +35,12 @@ class Transaction
     private $isClosed;
 
     /**
-     * @ORM\ManyToOne(targetEntity=customer::class, inversedBy="transactions")
+     * @ORM\ManyToOne(targetEntity=Customer::class, inversedBy="transactions")
      */
     private $customer;
 
     /**
-     * @ORM\ManyToMany(targetEntity=stamp::class, inversedBy="transactions")
+     * @ORM\ManyToMany(targetEntity=Stamp::class, inversedBy="transactions")
      */
     private $stamps;
 
