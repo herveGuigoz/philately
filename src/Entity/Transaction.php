@@ -90,12 +90,12 @@ class Transaction
         return $this;
     }
 
-    public function getCustomer(): ?customer
+    public function getCustomer(): ?Customer
     {
         return $this->customer;
     }
 
-    public function setCustomer(?customer $customer): self
+    public function setCustomer(?Customer $customer): self
     {
         $this->customer = $customer;
 
@@ -103,14 +103,14 @@ class Transaction
     }
 
     /**
-     * @return Collection|stamp[]
+     * @return Collection|Stamp[]
      */
     public function getStamps(): Collection
     {
         return $this->stamps;
     }
 
-    public function addStamp(stamp $stamp): self
+    public function addStamp(Stamp $stamp): self
     {
         if (!$this->stamps->contains($stamp)) {
             $this->stamps[] = $stamp;
@@ -119,7 +119,7 @@ class Transaction
         return $this;
     }
 
-    public function removeStamp(stamp $stamp): self
+    public function removeStamp(Stamp $stamp): self
     {
         $this->stamps->removeElement($stamp);
 

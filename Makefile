@@ -28,7 +28,6 @@ install: ## Install project
 	docker-compose pull
 	$(DC) up --build -d
 
-
 start: ## Start project 
 	docker-compose up -d --remove-orphans --no-recreate
 
@@ -51,7 +50,10 @@ logs: ## Show logs
 traefik-logs: ## Show traefik logs
 	docker logs -f traefik
 
-##API
+##PHP
+
+stan: ## Run php stan
+	docker-compose exec php ./vendor/bin/phpstan analyse -c phpstan.neon src --level 5
 
 cache: ## Clear cache
 	$(BIN_CONSOLE) cache:clear
