@@ -17,22 +17,13 @@ class Stamp
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private ?string $name;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Transaction::class, mappedBy="stamps")
-     */
-    private $transactions;
-
-    public function __construct()
-    {
-        $this->transactions = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -47,33 +38,6 @@ class Stamp
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Transaction[]
-     */
-    public function getTransactions(): Collection
-    {
-        return $this->transactions;
-    }
-
-    public function addTransaction(Transaction $transaction): self
-    {
-        if (!$this->transactions->contains($transaction)) {
-            $this->transactions[] = $transaction;
-            $transaction->addStamp($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTransaction(Transaction $transaction): self
-    {
-        if ($this->transactions->removeElement($transaction)) {
-            $transaction->removeStamp($this);
-        }
 
         return $this;
     }

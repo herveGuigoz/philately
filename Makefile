@@ -72,9 +72,8 @@ create-db: ## Create database
 
 # deploy: up-prod build update install cache up ## Deploy command
 
-# drop-db: ## Drop database
-# 	$(DC_UP)
-# 	$(BIN_CONSOLE) doctrine:database:drop --force
+drop-db: ## Drop database
+	$(BIN_CONSOLE) doctrine:database:drop --force
 
 # reset-db: drop-db create-db migration-migrate ## Reset database
 
@@ -84,11 +83,11 @@ create-db: ## Create database
 # migration-diff: ## Make the diff
 # 	$(BIN_CONSOLE) doctrine:migrations:diff
 
-# migration-generate: ## Create new migration
-# 	$(BIN_CONSOLE) doctrine:migrations:generate
+migration-generate: ## Create new migration
+	$(BIN_CONSOLE) make:migration
 
-# migration-migrate: ## Execute unlisted migrations
-# 	$(BIN_CONSOLE) doctrine:migrations:migrate
+migration-migrate: ## Execute unlisted migrations
+	$(BIN_CONSOLE) doctrine:migrations:migrate
 
 # up-dev: ## Start containers dev
 # 	cp .env.dev .env

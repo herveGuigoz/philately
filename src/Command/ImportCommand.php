@@ -2,7 +2,9 @@
 
 namespace App\Command;
 
+use _HumbugBox221ad6f1b81f\Nette\Utils\DateTime;
 use App\Entity\Customer;
+use App\Entity\Transaction;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Console\Command\Command;
@@ -38,9 +40,9 @@ class ImportCommand extends Command
         $startTime = microtime(true);
 
         $io = new SymfonyStyle($input, $output);
-        $io->title(sprintf('Parsing %s ...', '/src/Data/timbres2020.csv'));
+        $io->title(sprintf('Parsing %s ...', '/src/Data/TIMBRES20.csv'));
 
-        $sourceFilepath = $this->parameterBag->get('kernel.project_dir').'/src/Data/timbres2020.csv';
+        $sourceFilepath = $this->parameterBag->get('kernel.project_dir').'/src/Data/TIMBRES20.csv';
         $file = fopen($sourceFilepath, 'r');
 
 
@@ -57,14 +59,18 @@ class ImportCommand extends Command
                 $batch = 0;
             }
 
-            $pseudo = $row[2];
-            $customer = $this->entityManager->getRepository(Customer::class)->findOneBy([
-                'pseudo' => $pseudo,
-                ]);
-
-            if(!$customer) {
-                $this->createNewCustomerAndPersist($pseudo);
+            try {
+                $date = new \DateTime($row[0]);
+                $pseudo = $row[2];
+                $price = self::parseFloat($row[3]);
+                $commission = self::parseFloat($row[4]);
+            } catch (\Exception $e) {
+                continue;
             }
+
+            $customer = $this->findOrCreateCustomer($pseudo);
+
+            $this->createNewTransactionAndPersist($date, $customer, $price, $commission);
 
             $batch++;
         }
@@ -75,17 +81,44 @@ class ImportCommand extends Command
         printf("Execution Time: %s sec\n", $endTime - $startTime);
         printf("Memory: %s mb\n", memory_get_usage()/1000);
 
+        $this->entityManager->flush();
+
         return Command::SUCCESS;
     }
 
-    protected function createNewCustomerAndPersist(String $pseudo) {
-        $entity = new Customer();
+    static function parseFloat(String $input): float {
+        return floatval(str_replace([','], '.', $input));
+    }
+
+    protected function findOrCreateCustomer(String $pseudo): Customer {
+        $customer = $this->entityManager->getRepository(Customer::class)->findOneBy([
+            'pseudo' => $pseudo,
+        ]);
+
+        if(!$customer) {
+            $customer = new Customer();
+            $customer->setPseudo($pseudo);
+
+            $this->entityManager->persist($customer);
+        }
+
+        return $customer;
+    }
+
+    protected function createNewTransactionAndPersist(
+        \DateTime $date,
+        Customer $customer,
+        float $price,
+        float $tax,
+    ): void {
+        $entity = new Transaction();
         $entity
-            ->setPseudo($pseudo)
-            ->setFirstname('undefined')
-            ->setLastname('undefined');
+            ->setDate($date)
+            ->setPrice($price)
+            ->setTax($tax)
+            ->setCustomer($customer)
+            ->setIsClosed(true);
 
         $this->entityManager->persist($entity);
-        $this->entityManager->flush();
     }
 }

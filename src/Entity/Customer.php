@@ -20,9 +20,14 @@ class Customer
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $firstname;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $lastname;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -43,11 +48,6 @@ class Customer
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $city;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $lastname;
 
      /**
      * @ORM\OneToMany(targetEntity=Transaction::class, mappedBy="customer")
