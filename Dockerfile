@@ -83,6 +83,12 @@ RUN composer create-project "symfony/skeleton ${SYMFONY_VERSION}" . --stability=
 	composer clear-cache
 
 ###> recipes ###
+###> doctrine/doctrine-bundle ###
+RUN apk add --no-cache --virtual .pgsql-deps postgresql-dev; \
+	docker-php-ext-install -j$(nproc) pdo_pgsql; \
+	apk add --no-cache --virtual .pgsql-rundeps so:libpq.so.5; \
+	apk del .pgsql-deps
+###< doctrine/doctrine-bundle ###
 ###< recipes ###
 
 COPY . .
@@ -108,17 +114,19 @@ CMD ["php-fpm"]
 
 FROM caddy:${CADDY_VERSION}-builder-alpine AS symfony_caddy_builder
 
-RUN xcaddy build \
-    --with github.com/dunglas/mercure@main \
-    --with github.com/dunglas/mercure/caddy@main \
-    --with github.com/dunglas/vulcain/caddy
+RUN xcaddy build
+
+# RUN xcaddy build \
+#     --with github.com/dunglas/mercure@main \
+#     --with github.com/dunglas/mercure/caddy@main \
+#     --with github.com/dunglas/vulcain/caddy
 
 FROM caddy:${CADDY_VERSION} AS symfony_caddy
 
 WORKDIR /srv/app
 
-ENV MERCURE_DEMO="demo /srv/mercure-assets/"
-COPY --from=dunglas/mercure:v0.11 /srv/public /srv/mercure-assets/
+# ENV MERCURE_DEMO="demo /srv/mercure-assets/"
+# COPY --from=dunglas/mercure:v0.11 /srv/public /srv/mercure-assets/
 COPY --from=symfony_caddy_builder /usr/bin/caddy /usr/bin/caddy
 COPY --from=symfony_php /srv/app/public public/
 COPY docker/caddy/Caddyfile /etc/caddy/Caddyfile

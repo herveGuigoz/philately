@@ -1,0 +1,45 @@
+<?php
+
+namespace App\Form;
+
+use App\Entity\Customer;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Validator\Constraints as Assert;
+
+
+class CustomerType extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder
+            ->add('firstname', TextType::class, [
+                'constraints' => [
+                    new Assert\NotBlank(),
+                ],
+            ])
+            ->add('lastname', TextType::class, [
+                'constraints' => [
+                    new Assert\NotBlank(),
+                ],
+            ])
+            ->add('pseudo')
+            ->add('adress')
+            ->add('postCode', TextType::class, [
+                'constraints' => [
+                    new Assert\NotBlank(),
+                ],
+            ])
+            ->add('city')
+        ;
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'data_class' => Customer::class,
+        ]);
+    }
+}
