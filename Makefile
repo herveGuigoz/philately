@@ -89,6 +89,9 @@ migration-generate: ## Create new migration
 migration-migrate: ## Execute unlisted migrations
 	$(BIN_CONSOLE) doctrine:migrations:migrate
 
+import: ## Load csv file
+    $(BIN_CONSOLE) app:import
+
 # up-dev: ## Start containers dev
 # 	cp .env.dev .env
 # 	cp docker-compose.yml.dev docker-compose.yml

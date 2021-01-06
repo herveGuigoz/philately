@@ -16,6 +16,8 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class ImportCommand extends Command
 {
+    private const FILE_NAME = 'TIMBRES.csv';
+
     protected EntityManagerInterface $entityManager;
 
     protected ParameterBagInterface $parameterBag;
@@ -40,9 +42,9 @@ class ImportCommand extends Command
         $startTime = microtime(true);
 
         $io = new SymfonyStyle($input, $output);
-        $io->title(sprintf('Parsing %s ...', '/src/Data/TIMBRES20.csv'));
+        $io->title(sprintf('Parsing %s ...', self::FILE_NAME));
 
-        $sourceFilepath = $this->parameterBag->get('kernel.project_dir').'/src/Data/TIMBRES20.csv';
+        $sourceFilepath = $this->parameterBag->get('kernel.project_dir').'/src/Data/TIMBRES.csv';
         $file = fopen($sourceFilepath, 'r');
 
 
@@ -72,6 +74,8 @@ class ImportCommand extends Command
 
             $this->createNewTransactionAndPersist($date, $customer, $price, $commission);
 
+            $this->entityManager->flush();
+
             $batch++;
         }
 
@@ -80,8 +84,6 @@ class ImportCommand extends Command
         $endTime = microtime(true);
         printf("Execution Time: %s sec\n", $endTime - $startTime);
         printf("Memory: %s mb\n", memory_get_usage()/1000);
-
-        $this->entityManager->flush();
 
         return Command::SUCCESS;
     }

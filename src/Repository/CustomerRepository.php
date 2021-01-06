@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Customer;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\Pagination\PaginationInterface;
 
 /**
  * @method Customer|null find($id, $lockMode = null, $lockVersion = null)
@@ -18,6 +19,25 @@ class CustomerRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Customer::class);
     }
+
+    /**
+     * Récupère les customers en lien avec une recherche
+     * @param string|null $search
+     * @return array
+     */
+    public function findPseudoSearch(?string $search): array
+    {
+        $query = $this->createQueryBuilder('c');
+
+        if (!empty($search)) {
+            $query = $query
+                ->andWhere('c.pseudo LIKE :s')
+                ->setParameter('s', "%{$search}%");
+        }
+
+        return $query->getQuery()->getResult();
+    }
+
 
     // /**
     //  * @return Customer[] Returns an array of Customer objects

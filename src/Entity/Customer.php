@@ -164,5 +164,20 @@ class Customer
         }
 
         return $this;
-    }    
+    }
+
+    public function getTransactionsCount(): int
+    {
+          return $this->transactions->count();
+    }
+
+    public function getProfit(): float
+    {
+        $sum = 0;
+        foreach($this->transactions as $transaction) {
+            $sum += $transaction->getResult();
+        }
+
+        return $sum;
+    }
 }

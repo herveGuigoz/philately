@@ -66,7 +66,7 @@ class Transaction
 
     public function getPrice(): ?float
     {
-        return $this->price;
+        return $this->price ?? 0;
     }
 
     public function setPrice(float $price): self
@@ -76,9 +76,9 @@ class Transaction
         return $this;
     }
 
-    public function getTax(): ?float
+    public function getTax(): float
     {
-        return $this->tax;
+        return $this->tax ?? 0;
     }
 
     public function setTax(?float $tax): self
@@ -112,27 +112,8 @@ class Transaction
         return $this;
     }
 
-//    /**
-//     * @return Collection|Stamp[]
-//     */
-//    public function getStamps(): Collection
-//    {
-//        return $this->stamps;
-//    }
-//
-//    public function addStamp(Stamp $stamp): self
-//    {
-//        if (!$this->stamps->contains($stamp)) {
-//            $this->stamps[] = $stamp;
-//        }
-//
-//        return $this;
-//    }
-//
-//    public function removeStamp(Stamp $stamp): self
-//    {
-//        $this->stamps->removeElement($stamp);
-//
-//        return $this;
-//    }
+    public function getResult(): float
+    {
+        return $this->price - $this->tax;
+    }
 }

@@ -19,6 +19,17 @@ class TransactionRepository extends ServiceEntityRepository
         parent::__construct($registry, Transaction::class);
     }
 
+     /**
+      * @return array|int|string Returns an array with one entry, result => total prices - total taxes.
+      */
+    public function countTotalPricesMinusTaxes(): array|int|string
+    {
+        return $this->createQueryBuilder('t')
+            ->select('SUM(t.price - t.tax) as result')
+            ->getQuery()
+            ->getArrayResult();
+    }
+
     // /**
     //  * @return Transaction[] Returns an array of Transaction objects
     //  */
