@@ -12,14 +12,6 @@ DC_UP=$(DC) up -d
 DC_EXEC=$(DC) exec php
 BIN_CONSOLE=$(DC_EXEC) bin/console
 
-certs:
-	rm -rf certs
-	mkdir certs
-	mkcert -key-file ./certs/key.pem -cert-file ./certs/cert.pem "localhost" "*.localhost"
-
-network: ## Create external network
-	docker network create proxy
-
 fresh-install: ## Install project
 	docker-compose pull
 	SYMFONY_VERSION=$(SYMFONY_VERSION) POSTGRES_USER=$(POSTGRES_USER) POSTGRES_PASSWORD=$(POSTGRES_PASSWORD) POSTGRES_DB=$(POSTGRES_DB) $(DC) up --build -d
@@ -101,6 +93,17 @@ import: ## Load csv file
 # 	cp .env.prod .env
 # 	cp docker-compose.yml.prod docker-compose.yml
 # 	$(MAKE) up
+
+##Tailwind
+
+assets-dev: ## Run Encore postcss
+	yarn dev
+
+assets-watch: ## Run Encore postcss
+	yarn watch
+
+assets-prod: ## Run Encore postcss
+	NODE_ENV=production yarn build
 
 .DEFAULT_GOAL := help
 help:

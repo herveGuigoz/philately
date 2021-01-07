@@ -29,12 +29,12 @@ class Transaction
     /**
      * @ORM\Column(type="float")
      */
-    private ?float $price = 0;
+    private float $price = 0;
 
     /**
      * @ORM\Column(type="float", nullable=true)
      */
-    private ?float $tax = 0;
+    private float $tax = 0;
 
     /**
      * @ORM\Column(type="boolean")
@@ -64,7 +64,7 @@ class Transaction
         return $this;
     }
 
-    public function getPrice(): ?float
+    public function getPrice(): float
     {
         return $this->price ?? 0;
     }
@@ -88,7 +88,7 @@ class Transaction
         return $this;
     }
 
-    public function getIsClosed(): ?bool
+    public function getIsClosed(): bool
     {
         return $this->isClosed;
     }
