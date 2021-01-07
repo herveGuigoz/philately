@@ -22,7 +22,7 @@ class CustomerController extends AbstractController
         int $page,
     ): Response
     {
-        $filter = $request?->get('search');
+        $filter = $request->get('search');
 
         $pagination = $paginator->paginate(
             $customerRepository->findPseudoSearch($filter),
