@@ -20,6 +20,7 @@
     "symfony/form": "5.2.*",
     "symfony/framework-bundle": "5.2.*",
     "symfony/proxy-manager-bridge": "5.2.*",
+    "symfony/security-bundle": "5.2.*",
     "symfony/security-csrf": "5.2.*",
     "symfony/twig-bundle": "5.2.*",
     "symfony/validator": "5.2.*",
@@ -27,8 +28,11 @@
     "symfony/yaml": "5.2.*"
   },
   "require-dev": {
+    "doctrine/doctrine-fixtures-bundle": "^3.4",
     "phpstan/phpstan": "^0.12.64",
-    "symfony/maker-bundle": "^1.26"
+    "symfony/maker-bundle": "^1.26",
+    "symfony/stopwatch": "^5.2",
+    "symfony/web-profiler-bundle": "^5.2"
   },
   "config": {
     "optimize-autoloader": true,

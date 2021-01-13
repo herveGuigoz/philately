@@ -89,8 +89,14 @@ migration-generate: ## Create new migration
 migration-migrate: ## Execute unlisted migrations
 	$(BIN_CONSOLE) doctrine:migrations:migrate
 
-import-db: ## Load csv file
-    $(BIN_CONSOLE) app:import
+load-fixtures: ## Populate database with fixtures
+	$(BIN_CONSOLE) doctrine:fixtures:load
+
+debug-router: ## List routes
+	$(BIN_CONSOLE)  debug:router
+
+list-env-var: ## List environment variables
+	$(BIN_CONSOLE)  debug:container --env-vars
 
 ##
 ##NODEJS
