@@ -15,23 +15,15 @@ class CustomerType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('firstname', TextType::class, [
+            ->add('firstname')
+            ->add('lastname')
+            ->add('pseudo', TextType::class, [
                 'constraints' => [
                     new Assert\NotBlank(),
                 ],
             ])
-            ->add('lastname', TextType::class, [
-                'constraints' => [
-                    new Assert\NotBlank(),
-                ],
-            ])
-            ->add('pseudo')
             ->add('adress')
-            ->add('postCode', TextType::class, [
-                'constraints' => [
-                    new Assert\NotBlank(),
-                ],
-            ])
+            ->add('postCode')
             ->add('city')
         ;
     }

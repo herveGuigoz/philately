@@ -22,7 +22,7 @@ class CustomerController extends AbstractController
         int $page,
     ): Response
     {
-        $filter = $request?->get('search');
+        $filter = $request->get('search');
 
         $pagination = $paginator->paginate(
             $customerRepository->findPseudoSearch($filter),
@@ -76,6 +76,7 @@ class CustomerController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $this->addFlash('success', 'Successfully uploaded');
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('customer_index');

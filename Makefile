@@ -12,15 +12,8 @@ DC_UP=$(DC) up -d
 DC_EXEC=$(DC) exec php
 BIN_CONSOLE=$(DC_EXEC) bin/console
 
-certs:
-	rm -rf certs
-	mkdir certs
-	mkcert -key-file ./certs/key.pem -cert-file ./certs/cert.pem "localhost" "*.localhost"
-
-network: ## Create external network
-	docker network create proxy
-
-fresh-install: ## Install project
+##DOCKER
+fresh-install: ## Pull and build project
 	docker-compose pull
 	SYMFONY_VERSION=$(SYMFONY_VERSION) POSTGRES_USER=$(POSTGRES_USER) POSTGRES_PASSWORD=$(POSTGRES_PASSWORD) POSTGRES_DB=$(POSTGRES_DB) $(DC) up --build -d
 
@@ -45,11 +38,20 @@ reset: ## Reset all installation (use it with precaution!)
 logs: ## Show logs
 	docker-compose logs -f
 
-##TRAEFIK
+up-dev: ## Start containers dev
+	cp .env.dev .env
+	cp docker-compose.yml.dev docker-compose.yml
+	$(MAKE) up
 
-traefik-logs: ## Show traefik logs
-	docker logs -f traefik
+up-prod: ## Start containers prod
+	cp .env.prod .env
+	cp docker-compose.yml.prod docker-compose.yml
+	make yarn-prod
+	$(MAKE) up
 
+deploy: up-prod build update install cache up ## Deploy command
+
+##
 ##PHP
 
 stan: ## Run php stan
@@ -70,18 +72,16 @@ composer-update: ## Update composer
 create-db: ## Create database
 	$(BIN_CONSOLE) doctrine:database:create
 
-# deploy: up-prod build update install cache up ## Deploy command
-
 drop-db: ## Drop database
 	$(BIN_CONSOLE) doctrine:database:drop --force
 
-# reset-db: drop-db create-db migration-migrate ## Reset database
+reset-db: drop-db create-db migration-migrate ## Reset database
 
-# migration-down: ## Remove migration
-# 	$(BIN_CONSOLE) doctrine:migrations:execute --down $(migration)
+migration-down: ## Remove migration
+	$(BIN_CONSOLE) doctrine:migrations:execute --down $(migration)
 
-# migration-diff: ## Make the diff
-# 	$(BIN_CONSOLE) doctrine:migrations:diff
+migration-diff: ## Make the diff
+	$(BIN_CONSOLE) doctrine:migrations:diff
 
 migration-generate: ## Create new migration
 	$(BIN_CONSOLE) make:migration
@@ -89,18 +89,20 @@ migration-generate: ## Create new migration
 migration-migrate: ## Execute unlisted migrations
 	$(BIN_CONSOLE) doctrine:migrations:migrate
 
-import: ## Load csv file
+import-db: ## Load csv file
     $(BIN_CONSOLE) app:import
 
-# up-dev: ## Start containers dev
-# 	cp .env.dev .env
-# 	cp docker-compose.yml.dev docker-compose.yml
-# 	$(MAKE) up
+##
+##NODEJS
 
-# up-prod: ## Start containers prod
-# 	cp .env.prod .env
-# 	cp docker-compose.yml.prod docker-compose.yml
-# 	$(MAKE) up
+yarn-dev: ## Run Encore
+	yarn dev
+
+yarn-watch: ## Run Encore and watch
+	yarn watch
+
+yarn-prod: ## Build assets
+	NODE_ENV=production yarn build
 
 .DEFAULT_GOAL := help
 help:
