@@ -9,21 +9,20 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AdminFixtures extends Fixture
 {
-    private UserPasswordEncoderInterface $passwordEncoder;
-
-    public function __construct(UserPasswordEncoderInterface $passwordEncoder)
-    {
-        $this->passwordEncoder = $passwordEncoder;
-    }
+    public function __construct(
+        private UserPasswordEncoderInterface $passwordEncoder,
+        private String $username,
+        private String $password
+    ){}
 
     public function load(ObjectManager $manager)
     {
         $admin = new Admin();
-        $admin->setUsername('admin');
+        $admin->setUsername($this->username);
         $admin->setRoles(['ROLE_ADMIN']);
         $admin->setPassword($this->passwordEncoder->encodePassword(
             $admin,
-            'admin'
+            $this->password,
         ));
 
         $manager->persist($admin);

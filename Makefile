@@ -95,6 +95,9 @@ load-fixtures: ## Populate database with fixtures
 debug-router: ## List routes
 	$(BIN_CONSOLE)  debug:router
 
+list-env-var: ## List environment variables
+	$(BIN_CONSOLE)  debug:container --env-vars
+
 ##
 ##NODEJS
 
