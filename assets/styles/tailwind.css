@@ -31,7 +31,7 @@
     }
 
     .btn-black {
-        @apply border border-transparent text-white bg-gray-800 hover:bg-gray-900 focus:ring-gray-900;
+        @apply border border-transparent text-white bg-gray-800 hover:bg-gray-900 focus:ring-transparent;
     }
     .btn-gray {
         @apply border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 focus:ring-transparent active:bg-gray-300;

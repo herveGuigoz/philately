@@ -1,0 +1,71 @@
+<div class="hidden sm:block">
+    <div class="align-middle inline-block min-w-full border-b border-gray-200">
+        <table class="min-w-full">
+            <thead>
+            <tr class="border-t border-gray-200">
+                <th class="{% if customers.isSorted('pseudo') %} text-gray-900{% endif %}">
+                    {{ knp_pagination_sortable(customers, 'Pseudo', 'pseudo') }}
+                </th>
+                <th class="{% if customers.isSorted('transactionsCount') %} text-gray-900 {% endif %}">
+                    {{ knp_pagination_sortable(customers, 'Ventes', 'transactionsCount') }}
+                </th>
+                <th>
+                    {{ knp_pagination_sortable(customers, 'Profit', 'profit') }}
+                </th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-100">
+            {% for customer in customers %}
+                <tr>
+                    <td class="text-left">{{ customer.pseudo }}</td>
+                    <td class="text-left">{{ customer.transactionsCount }}</td>
+                    <td class="text-left">{{ customer.profit }}€</td>
+                    <td class="px-6 py-4 flex justify-end">
+                        <div x-data="{ isDropDownOpen: false }">
+                            <button @click="isDropDownOpen = true" class="btn-small btn-gray" id="options-menu" aria-haspopup="true" :aria-expanded="isDropDownOpen">
+                                Actions
+                            </button>
+
+                            <div x-show.transition="isDropDownOpen" @click.away="isDropDownOpen = false" class="dropdown-wrapper" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                                <div class="py-1">
+                                    <a href="{{ path('customer_show', {'id': customer.id}) }}" class="dropdown-item" role="menuitem">
+                                        <svg class="dropdown-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">#}
+                                            <path d="M7 9a2 2 0 012-2h6a2 2 0 012 2v6a2 2 0 01-2 2H9a2 2 0 01-2-2V9z" />
+                                            <path d="M5 3a2 2 0 00-2 2v6a2 2 0 002 2V5h8a2 2 0 00-2-2H5z" />
+                                        </svg>
+                                        Details
+                                    </a>
+                                    <a href="{{ path('customer_edit', {'id': customer.id}) }}" class="dropdown-item" role="menuitem">
+                                        <!-- Heroicon name: pencil-alt -->
+                                        <svg class="dropdown-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                            <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
+                                            <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd" />
+                                        </svg>
+                                        Editer
+                                    </a>
+                                </div>
+                                <div class="py-1">
+                                    {#<a href="{{ path('customer_delete', {'id': customer.id}) }}" class="dropdown-item cursor-pointer" role="menuitem">#}
+                                    <div @click="deleteModalOpen = true" class="dropdown-item cursor-pointer" role="menuitem">
+                                        <!-- Heroicon name: trash -->
+                                        <svg class="dropdown-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                            <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                        </svg>
+                                        Supprimer
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+            {% else %}
+                <tr>
+                    <td colspan="3">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>

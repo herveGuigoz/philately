@@ -1,0 +1,36 @@
+<div class="hidden sm:block">
+    <div class="align-middle inline-block min-w-full border-b border-gray-200">
+        <table class="min-w-full">
+            <thead>
+            <tr class="border-t border-gray-200">
+                <th>Date</th>
+                <th>Prix Vente</th>
+                <th>Commission</th>
+                <th>Profit</th>
+            </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-100">
+            {% for transaction in customer.transactions %}
+                <tr>
+                    <td class="md:table-cell px-6 py-3 whitespace-nowrap text-sm text-gray-500 text-left">
+                        {{ transaction.date|date("d/m/Y") }}
+                    </td>
+                    <td class="md:table-cell px-6 py-3 whitespace-nowrap text-sm text-gray-500 text-left">
+                        {{ transaction.price }}€
+                    </td>
+                    <td class="md:table-cell px-6 py-3 whitespace-nowrap text-sm text-gray-500 text-left">
+                        {{ transaction.tax }}€
+                    </td>
+                    <td class="md:table-cell px-6 py-3 whitespace-nowrap text-sm text-gray-500 text-left">
+                        {{ transaction.result }}€
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3" class="py-4 px-4 text-sm text-gray-500">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>

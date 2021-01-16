@@ -1,0 +1,18 @@
+{# table forked from https://tailwindui.com/preview #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Customer index{% endblock %}
+
+{% block body %}
+    <!-- Page title & actions -->
+    {{ include('customer/index/title.html.twig') }}
+
+    <!-- Customer list (only on smallest breakpoint) -->
+    {{ include('customer/index/smallest_breakpoint.html.twig') }}
+
+    <!-- Customer table (small breakpoint and up) -->
+    {{ include('customer/index/small_breakpoint_and_up.html.twig') }}
+
+    <!-- Pagination https://github.com/KnpLabs/KnpPaginatorBundle -->
+    {{ include('customer/index/pagination.html.twig', {'currentPageNumber': currentPageNumber, 'numberOfPages': numberOfPages}) }}
+{% endblock %}
