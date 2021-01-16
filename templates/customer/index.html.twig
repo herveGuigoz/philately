@@ -20,7 +20,7 @@
                     <input id="search_field" class="block w-full h-full pl-8 pr-3 py-2 border-transparent text-gray-900 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-0 focus:border-transparent sm:text-sm" placeholder="Search" type="search" name="search">
                 </div>
                 <div class="mt-4 flex sm:mt-0 sm:ml-4">
-                    <button type="submit" class="order-1 ml-3 inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 sm:order-0 sm:ml-0">
+                    <button type="submit" class="order-1 ml-3 btn-medium btn-gray">
                         Search
                     </button>
                 </div>
@@ -83,7 +83,7 @@
                             <td class="text-left">{{ customer.profit }}€</td>
                             <td class="px-6 py-4 flex justify-end">
                                 <div x-data="{ open: false }">
-                                    <button @click="open = true" class="btn-gray" id="options-menu" aria-haspopup="true" aria-expanded="true">
+                                    <button @click="open = true" class="btn-small btn-gray" id="options-menu" aria-haspopup="true" aria-expanded="true">
                                         Actions
                                     </button>
 

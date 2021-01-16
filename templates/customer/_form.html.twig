@@ -69,8 +69,12 @@
     <div class="py-4 text-left text-xs text-gray-400">
         *Required
     </div>
-    <div class="px-4 py-4 text-right sm:px-6">
-        <button type="submit" class="btn-black">
+    <div class="py-4 flex justify-between">
+        <a href="{{ path('customer_index') }}" class="btn-medium btn-gray">
+            Retour
+        </a>
+
+        <button type="submit" class="btn-medium btn-black">
             {{ button_label|default('Save') }}
         </button>
     </div>
