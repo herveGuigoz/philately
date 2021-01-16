@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Customer{% endblock %}
+
+{% block body %}
+    <!-- Header -->
+    {{ include('customer/show/header.html.twig', {'customer': customer}) }}
+
+    <!-- Customer table (only on smallest breakpoint) -->
+    {{ include('customer/show/smallest_breakpoint.html.twig', {'customer': customer}) }}
+
+    <!-- Customer table (small breakpoint and up) -->
+    {{ include('customer/show/small_breakpoint_and_up.html.twig', {'customer': customer}) }}
+
+{% endblock %}

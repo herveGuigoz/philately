@@ -33,7 +33,7 @@ class CustomerController extends AbstractController
         $currentPageNumber = $pagination->getCurrentPageNumber();
         $numberOfPages = ceil($pagination->getTotalItemCount() / $pagination->getItemNumberPerPage());
 
-        return $this->render('customer/index.html.twig', [
+        return $this->render('customer/index/main.html.twig', [
             'customers' => $pagination,
             'currentPageNumber' => $currentPageNumber,
             'numberOfPages' => $numberOfPages,
@@ -64,7 +64,7 @@ class CustomerController extends AbstractController
     #[Route('/history/{id}', name: 'customer_show', methods: ['GET'])]
     public function show(Customer $customer): Response
     {
-        return $this->render('customer/show.html.twig', [
+        return $this->render('customer/show/main.html.twig', [
             'customer' => $customer,
         ]);
     }
